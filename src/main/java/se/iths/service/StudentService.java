@@ -15,9 +15,12 @@ public class StudentService {
     EntityManager entityManager;
 
     public Student createStudent(Student student) {
-        entityManager.persist(student);
-        entityManager.flush();
-        return student;
+        try {
+            entityManager.persist(student);
+            return student;
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     public Student deleteStudent(Long id) {
@@ -43,26 +46,38 @@ public class StudentService {
 
     public Student updateFirstName(Long id, String name) {
         Student foundStudent = entityManager.find(Student.class, id);
-        foundStudent.setFirstName(name);
-        return entityManager.merge(foundStudent);
+        if (foundStudent != null) {
+            foundStudent.setFirstName(name);
+            return entityManager.merge(foundStudent);
+        }
+        return null;
     }
 
     public Student updateLastName(Long id, String name) {
         Student foundStudent = entityManager.find(Student.class, id);
-        foundStudent.setLastName(name);
-        return entityManager.merge(foundStudent);
+        if (foundStudent != null) {
+            foundStudent.setLastName(name);
+            return entityManager.merge(foundStudent);
+        }
+        return null;
     }
 
     public Student updateEmail(Long id, String name) {
         Student foundStudent = entityManager.find(Student.class, id);
-        foundStudent.setEmail(name);
-        return entityManager.merge(foundStudent);
+        if (foundStudent != null) {
+            foundStudent.setEmail(name);
+            return entityManager.merge(foundStudent);
+        }
+        return null;
     }
 
     public Student updatePhoneNumber(Long id, String name) {
         Student foundStudent = entityManager.find(Student.class, id);
-        foundStudent.setPhoneNumber(name);
-        return entityManager.merge(foundStudent);
+        if (foundStudent != null) {
+            foundStudent.setPhoneNumber(name);
+            return entityManager.merge(foundStudent);
+        }
+        return null;
     }
 
 }

@@ -21,15 +21,16 @@ public class StudentRest {
     @Path("")
     @POST
     public Response createStudent(Student student) {
-        Student createStudent = studentService.createStudent(student);
-        if (createStudent == null) {
+        Student result = studentService.createStudent(student);
+        if (result != null) {
+            return Response.ok(student).status(Response.Status.CREATED).build();
+        } else {
             throw new WebApplicationException(
                     Response.status(Response.Status.BAD_REQUEST)
-                            .entity("kunde inte hitta skapa student: ")
+                            .entity("kunde inte skapa studenten, kontrollera din json!")
                             .type(MediaType.TEXT_PLAIN_TYPE).build()
             );
         }
-        return Response.ok(student).build();
     }
 
     @Path("{id}")
@@ -64,41 +65,89 @@ public class StudentRest {
     @GET
     public Response getAllStudents() {
         List<Student> foundStudents = studentService.getAllStudents();
-        return Response.ok(foundStudents).build();
+        if (!foundStudents.isEmpty()) {
+            return Response.ok(foundStudents).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("hittade inga studenter")
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 
     @Path("{id}")
     @GET
     public Response getStudent(@PathParam("id") Long id) {
         Student foundStudent = studentService.findStudentById(id);
-        return Response.ok(foundStudent).build();
+        if (foundStudent != null) {
+            return Response.ok(foundStudent).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("hittade ingen student med id: " +id)
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 
     @Path("updatefirstname/{id}")
     @PATCH
     public Response updateFirstName(@PathParam("id") Long id, @QueryParam("firstName") String firstName) {
         Student updateFirstName = studentService.updateFirstName(id, firstName);
-        return Response.ok(updateFirstName).build();
+        if (updateFirstName != null) {
+            return Response.ok(updateFirstName).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("kunde inte uppdatera student med id: " + id + " med namnet: " + firstName)
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 
     @Path("updatelastname/{id}")
     @PATCH
     public Response updateLastName(@PathParam("id") Long id, @QueryParam("lastName") String lastName) {
         Student updateLastName = studentService.updateLastName(id, lastName);
-        return Response.ok(updateLastName).build();
+        if (updateLastName != null) {
+            return Response.ok(updateLastName).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("kunde inte uppdatera student med id: " + id + " med namnet: " + lastName)
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 
     @Path("updateemail/{id}")
     @PATCH
     public Response updateEmail(@PathParam("id") Long id, @QueryParam("email") String email) {
         Student updateEmail = studentService.updateEmail(id, email);
-        return Response.ok(updateEmail).build();
+        if (updateEmail != null) {
+            return Response.ok(updateEmail).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("kunde inte uppdatera student med id: " + id + " med email: " + email)
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 
     @Path("phonenumber/{id}")
     @PATCH
     public Response updatePhoneNumber(@PathParam("id") Long id, @QueryParam("phoneNumber") String phoneNumber) {
         Student updatePhoneNumber = studentService.updatePhoneNumber(id, phoneNumber);
-        return Response.ok(updatePhoneNumber).build();
+        if (updatePhoneNumber != null) {
+            return Response.ok(updatePhoneNumber).build();
+        } else {
+            throw new WebApplicationException(
+                    Response.status(Response.Status.NOT_FOUND)
+                            .entity("kunde inte uppdatera student med id: " + id + " med phonenumber: " + phoneNumber)
+                            .type(MediaType.TEXT_PLAIN_TYPE).build()
+            );
+        }
     }
 }
