@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Transactional
 public class StudentService {
@@ -65,10 +67,24 @@ public class StudentService {
     public Student updateEmail(Long id, String name) {
         Student foundStudent = entityManager.find(Student.class, id);
         if (foundStudent != null) {
+            if (isValidEmail(name) == false) {
+                return null;
+            }
             foundStudent.setEmail(name);
             return entityManager.merge(foundStudent);
         }
         return null;
+    }
+
+    public static boolean isValidEmail(String email)
+    {
+        if (email != null)
+        {
+            Pattern p = Pattern.compile("^[A-Za-z].*?@gmail\\.com$");
+            Matcher m = p.matcher(email);
+            return m.find();
+        }
+        return false;
     }
 
     public Student updatePhoneNumber(Long id, String name) {

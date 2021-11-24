@@ -2,6 +2,7 @@ package se.iths.rest;
 
 
 import se.iths.entity.Student;
+import se.iths.exception.NotCorrectEmailException;
 import se.iths.service.StudentService;
 
 import javax.inject.Inject;
@@ -128,11 +129,7 @@ public class StudentRest {
         if (updateEmail != null) {
             return Response.ok(updateEmail).build();
         } else {
-            throw new WebApplicationException(
-                    Response.status(Response.Status.NOT_FOUND)
-                            .entity("kunde inte uppdatera student med id: " + id + " med email: " + email)
-                            .type(MediaType.TEXT_PLAIN_TYPE).build()
-            );
+            throw new NotCorrectEmailException("Du måste ange email med formatet *****@gmail.com !, försök igen!");
         }
     }
 
